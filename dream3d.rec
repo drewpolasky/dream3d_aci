@@ -1,0 +1,41 @@
+BootStrap: docker
+From: ubuntu:16.04
+
+%setup
+
+
+%environment
+export PATH=/opt/DREAM3D-6.4.197-Linux-x86_64/bin:$PATH
+
+%runscript
+exec /opt/DREAM3D-6.4.197-Linux-x86_64/bin/DREAM3D
+
+%post
+    # commands to be executed inside container during bootstrap
+    # add python and install some packages
+    apt-get update -y && apt-get upgrade -y 
+    apt install -y build-essential
+    apt-get install -y git cmake gcc gfortran binutils \
+      patch \
+      g++ bzip2 ca-certificates \
+      libglib2.0-0 libxext6 libsm6 libxrender1 \
+      mercurial subversion \
+      libcanberra-gtk* \
+      autoconf wget sed libtbb-dev\
+      
+	apt-get install -y software-properties-common
+	apt-get update -y 
+
+	cd /opt/
+	wget https://github.com/BlueQuartzSoftware/DREAM3D/releases/download/v6_4_197/DREAM3D-6.4.197-Linux-x86_64.tar.gz
+	tar -xvzf DREAM3D-6.4.197-Linux-x86_64.tar.gz
+	cd DREAM3D-6.4.197-Linux-x86_64
+
+
+
+    mkdir -p /storage/home
+    mkdir -p /storage/work
+    mkdir -p /gpfs/scratch
+    mkdir -p /gpfs/group
+    mkdir -p /var/spool/torque
+
